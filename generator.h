@@ -16,7 +16,8 @@ public:
 class def {
 	int n, w, max = 0;
 	vector<Pointt> ps;
-	vector<Pointt> res{ Pointt(0,0,"b") };
+	vector<Pointt> res;
+	vector<Pointt> Max_par{ Pointt(0,0,"z") };
 public:
 	void Read(string fname) {
 		ifstream f;
@@ -26,50 +27,55 @@ public:
 		int x, y;
 		for (int i = 0; i < n; i++) {
 			f >> x >> y;
-			if (y > max)
+			if (x > max && x <= w)
 			{
-				res[0].x = x;
-				res[0].y = y;
-				res[0].s = "P" + std::to_string(i + 1);
-				max = y;
+				Max_par[0].x = x;
+				Max_par[0].y = y;
+				Max_par[0].s = "P" + std::to_string(i + 1);
+				max = x;
 			}
 			ps.emplace_back(x, y, "P" + std::to_string(i + 1));
 		}
 	}
 
-	vector<int> v;
 
-
-	void Add(int idx)
+	void Add(int Wes, int Pri, string Name)
 	{
-		for (int i = idx; i < n; i++)
+		for (int i = 0; i < n; i++)
 		{
-			if (ps[idx].y + ps[i].y <= w && i != idx)
+			if (Wes <=w && Wes >= max)
 			{
-				res.emplace_back(ps[idx].x + ps[i].x, ps[idx].y + ps[i].y, ps[idx].s + "+" + ps[i].s);
-				if (ps[idx].y + ps[i].y >= max)
-				{
-					res[0].x = ps[idx].x + ps[i].x;
-					res[0].y = ps[idx].y + ps[i].y;
-					res[0].s = ps[idx].s + "+" + ps[i].s;
-					max = ps[idx].y + ps[i].y;
-				}
+				Max_par[0].x = Wes;
+				Max_par[0].y = Pri;
+				Max_par[0].s = Name;
+				max = Wes;
+			}
+			Wes += ps[i].x;
+			if (Wes > w) { Wes -= ps[i].x; continue; }
+			Pri += ps[i].y;
+			int size = Name.size();
+			Name += ps[i].s + "+";
+			if (Wes <= w)
+			{
+				res.emplace_back(Wes, Pri, Name); 
+				//cout << Name << ":    " << Wes << "       " << Pri << endl;
+				Add(Wes, Pri, Name);
+				Wes -= ps[i].x;
+				Pri -= ps[i].y;
+				Name.erase(size);
 			}
 		}
-		if (idx == n - 1) return;
-		Add(idx + 1);
 	}
 
 	void Print() {
 		for (Pointt& p : ps) {
-			cout << p.s << ":       " << p.x << "       " << p.y << endl;
+			cout << p.s << ":       " << p.x << "       " << p.y << endl << endl;
 		}
-		for (int i = 1; i < res.size(); i++) {
+		for (int i = 0; i < res.size(); i++) {
 			cout << res[i].s << ":    " << res[i].x << "       " << res[i].y << endl;
 		}
 		cout << endl;
-		cout << res[0].s << ":       " << res[0].x << "       " << res[0].y << "      <------ Best option" << endl;
+		cout << Max_par[0].s << ":       " << Max_par[0].x << "       " << Max_par[0].y << "      <------ Best option" << endl;
 	}
 
 };
-

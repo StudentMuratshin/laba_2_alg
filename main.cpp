@@ -11,7 +11,7 @@ int main() {
 	//dynamic b;
 
 	a.Read("input.txt");
-	a.Add(0);
+	a.Add(0,0,"");
 	a.Print();
 
 	//b.Read("input.txt");
