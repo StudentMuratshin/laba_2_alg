@@ -7,7 +7,7 @@ using namespace std;
 
 
 int main() {
-	cout << "Who's" << setw(16) << "Price" << setw(12) <<  "Weight  " << endl << endl;
+	cout << "Who's" << setw(17) << "Weight" << setw(11) <<  "Price   " << endl << endl;
 	def a;
 	dynamic b;
 

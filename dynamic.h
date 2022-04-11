@@ -16,8 +16,10 @@ public:
 };
 
 class dynamic {
-	int n, w, max = 0;
+	int n, w, max = 0, count_answer = 0;
+	string name_answer;
 	vector<Point> ps;
+	vector<Point> res;
 	vector<vector<int>> zxc;
 	vector <int> column;
 
@@ -49,11 +51,22 @@ public:
 				/*if (j >= ps[i-1].x) zxc[i][j] = std::max(zxc[i - 1][j], zxc[i - 1][j - ps[i-1].x] + ps[i-1].y);
 				else zxc[i][j] = zxc[i - 1][j];*/
 				zxc[i][j] = zxc[i - 1][j];
-				if (ps[i - 1].x <= j)
+				if ( j >= ps[i - 1].x)
 				{
-					zxc[i][j] = std::max(zxc[i][j], zxc[i][j - ps[i-1].x] + ps[i - 1].y);
+					zxc[i][j] = std::max(zxc[i][j], zxc[i][j - ps[i - 1].x] + ps[i - 1].y);
 				}
 			}
+		}
+	}
+
+	void Ans(int k, int s)
+	{
+		if (k < 0 || s < 0 || zxc[k][s] == 0) return;
+		if (zxc[k - 1][s] == zxc[k][s]) { Ans(k - 1, s); }
+		else {
+			count_answer += ps[k - 1].y;
+			name_answer += ps[k - 1].s + "+";
+			Ans(k, s - ps[k - 1].x);
 		}
 	}
 
@@ -67,5 +80,7 @@ public:
 			}
 			cout << endl;
 		}
+		Ans(n, w);
+		cout << endl << name_answer << "   " << count_answer << "      <------ Best option" << endl;;
 	}
 };
