@@ -54,6 +54,7 @@ public:
 			Name += ps[i].s + "+";
 			if (Wes <= w)
 			{
+				if (Check(Wes, Pri, Name, Count))
 				res.emplace_back(Wes, Pri, Name, Count);
 				Add(Wes, Pri, Name);
 				Wes -= ps[i].x;
@@ -78,21 +79,18 @@ public:
 		}
 	}
 
-	void Sort_row()
+	bool Check(int Wes, int Pri, string Name, int Count)
 	{
 		for (int i = 0; i < res.size(); i++)
 		{
-			for (int j = i + 1; j < res.size(); j++)
-			{
-				if ((res[i].s).size() == (res[j].s).size() && res[i].k == res[j].k && res[i].x == res[j].x && res[i].y == res[j].y)
-					res.erase(res.begin() + j);
-			}
+			if ((res[i].s).size() == Name.size() && res[i].k == Count && res[i].x == Wes && res[i].y == Pri)
+				return false;
 		}
+		return true;
 	}
 
 	void Print() 
 	{
-		Sort_row();
 		Sort_max();
 		/*for (Pointt& p : ps) {
 			cout << p.s << ":       " << p.x << "       " << p.y << endl << endl;
