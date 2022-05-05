@@ -47,21 +47,23 @@ public:
 		for (int i = 0; i < n; i++)
 		{
 			Wes += ps[i].x;
-			if (Wes > w) { Wes -= ps[i].x; continue; }
-			Count += i;
-			Pri += ps[i].y;
-			int size = Name.size();
-			Name += ps[i].s + "+";
 			if (Wes <= w)
 			{
-				if (Check(Wes, Pri, Name, Count))
-				res.emplace_back(Wes, Pri, Name, Count);
+				//TODO += сюда
+				Count += i;
+				Pri += ps[i].y;
+				int size = Name.size();
+				Name += ps[i].s + "+";
+				if (Check(Wes, Pri, Name, Count)) {
+					res.emplace_back(Wes, Pri, Name, Count);
+				}
 				Add(Wes, Pri, Name);
 				Wes -= ps[i].x;
 				Pri -= ps[i].y;
 				Count -= i;
 				Name.erase(size);
 			}
+			else Wes -= ps[i].x;
 		}
 	}
 
